@@ -1,25 +1,23 @@
 {% extends "base.html" %}
 
-
 {% block content %}
-<h1><span class="tag" style="font-size:1rem">{{ term.name }}</span></h1>
-<p class="post-summary" style="margin-bottom:2rem">
-    {{ term.page_count }} post{% if term.page_count != 1 %}s{% endif %}.
-</p>
+<h1 class="post-title">#{{ term.name }}</h1>
+<p class="post-summary">{{ term.page_count }} post{% if term.page_count != 1 %}s{% endif %}.</p>
 
 {% if term.pages %}
 <ul class="post-list">
     {% for p in term.pages %}
     <li class="post-item">
-        <h2 class="post-item__title"><a href="{{ p.path }}">{{ p.title }}</a></h2>
-        <p class="post-item__summary">{{ p.summary | default(value="") }}</p>
-        <div class="post-item__meta">{{ p.date | date(format="%b %d, %Y") }}</div>
+        <a href="{{ p.path }}">
+            <span class="post-item__date">{{ p.date | date(format="%Y-%m-%d") }}</span>
+            :: <span class="post-item__title">{{ p.title }}</span>
+        </a>
     </li>
     {% endfor %}
 </ul>
 {% else %}
-<p class="empty">Nothing tagged yet.</p>
+<p class="empty">nothing tagged yet</p>
 {% endif %}
 
-<p style="margin-top:2rem"><a href="/tags/">&larr; All tags</a></p>
+<p style="margin-top:30px"><a href="/tags/">&larr; all tags</a></p>
 {% endblock content %}

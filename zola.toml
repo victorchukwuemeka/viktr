@@ -25,7 +25,7 @@ taxonomies = [
 smart_punctuation = true
 
 [markdown.highlighting]
-theme = "catppuccin-latte"
+theme = "catppuccin-mocha"
 
 [extra]
 github = "https://github.com/victorchukwuemeka"

@@ -1,13 +1,9 @@
 {% extends "base.html" %}
 
-
 {% block content %}
 <div class="hero">
-    <h1>Hi, I'm Victor.</h1>
-    <p>
-        Blockchain and backend engineer. I build cross-chain infrastructure in
-        Rust and Solidity, and I write about the parts that break.
-    </p>
+    <h1 class="post-title">Inside Thoughts</h1>
+    {{ section.content | safe }}
 </div>
 
 {% set blog = get_section(path="blog/_index.md") %}
@@ -15,29 +11,27 @@
 {% set total = posts | length %}
 
 {% if total > 0 %}
-<div class="section-heading">Latest writing</div>
+<div class="list-title">latest</div>
 <ul class="post-list">
     {% for p in posts[:10] %}
     <li class="post-item">
-        <h2 class="post-item__title"><a href="{{ p.path }}">{{ p.title }}</a></h2>
-        <p class="post-item__summary">{{ p.summary | default(value="") }}</p>
-        <div class="post-item__meta">
-            {{ p.date | date(format="%b %d, %Y") }}
-            {% if p.taxonomies %}
-            <span class="post-item__tags">
-                {% for t in p.taxonomies.tags %}
-                <a class="tag" href="{{ '/tags/' ~ t | slugify ~ '/' }}">{{ t }}</a>
-                {% endfor %}
-            </span>
-            {% endif %}
-        </div>
+        <a href="{{ p.path }}">
+            <span class="post-item__date">{{ p.date | date(format="%Y-%m-%d") }}</span>
+            :: <span class="post-item__title">{{ p.title }}</span>
+        </a>
+        {% if p.taxonomies.tags %}
+        <span class="post-tags-inline">
+            ::
+            {% for t in p.taxonomies.tags %}<a class="post-tag" href="/tags/{{ t | slugify }}/">{{ t }}</a>{% if not loop.last %},{% endif %}{% endfor %}
+        </span>
+        {% endif %}
     </li>
     {% endfor %}
 </ul>
 {% if total > 10 %}
-<p style="margin-top:1.5rem"><a href="/blog/">All {{ total }} posts &rarr;</a></p>
+<p style="margin-top:30px"><a href="/blog/">all {{ total }} posts &rarr;</a></p>
 {% endif %}
 {% else %}
-<p class="empty">No posts yet.</p>
+<p class="empty">no posts yet</p>
 {% endif %}
 {% endblock content %}

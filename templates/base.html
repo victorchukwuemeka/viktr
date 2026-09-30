@@ -12,6 +12,9 @@
     <title>{{ meta_title }}</title>
     <meta name="description" content="{{ meta_description }}">
 
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Hack:wght@400;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="/custom.css">
 
     <meta property="og:site_name" content="{{ config.title }}">
@@ -26,32 +29,37 @@
     <link rel="me" href="{{ config.extra.github }}">
 </head>
 <body>
+<div class="container">
     <header class="site-header">
-        <div class="wrap site-header__inner">
-            <a class="site-title" href="/">{{ config.title }}</a>
-            <nav class="site-nav">
-                <a href="/blog/" {% if section == "blog" %}class="is-active"{% endif %}>writing</a>
-                <a href="/tags/" {% if current_path == "/tags/" %}class="is-active"{% endif %}>tags</a>
-                <a href="/about/" {% if current_path == "/about/" %}class="is-active"{% endif %}>about</a>
-                <a href="{{ config.extra.github }}" rel="noopener noreferrer">github</a>
-                <a href="/rss.xml">rss</a>
-            </nav>
+        <div class="header__logo">
+            <a class="logo" href="/">{{ config.title }}</a>
         </div>
+        <nav>
+            <ul class="site-nav">
+                <li {% if current_path == "/" %}class="active"{% endif %}><a href="/">latest</a></li>
+                <li {% if section == "blog" %}class="active"{% endif %}><a href="/blog/">posts</a></li>
+                <li {% if current_path == "/tags/" %}class="active"{% endif %}><a href="/tags/">tags</a></li>
+                <li {% if current_path == "/about/" %}class="active"{% endif %}><a href="/about/">about</a></li>
+                <li><a href="{{ config.extra.github }}" rel="noopener noreferrer">github</a></li>
+                <li><a href="{{ config.extra.x }}" rel="noopener noreferrer">x</a></li>
+            </ul>
+        </nav>
     </header>
 
-    <main class="wrap">
+    <div class="content">
         {% block content %}{% endblock content %}
-    </main>
+    </div>
 
     <footer class="site-footer">
-        <div class="wrap">
-            <div>&copy; {{ config.author }}</div>
-            <div class="site-footer__links">
-                <a href="{{ config.extra.github }}" rel="noopener noreferrer">GitHub</a>
-                <a href="{{ config.extra.x }}" rel="noopener noreferrer">X</a>
-                <a href="{{ config.extra.email }}">Email</a>
-            </div>
+        <span>{{ config.author }}</span>
+        <span class="site-footer__sep">::</span>
+        <a href="/rss.xml">rss</a>
+        <div class="site-footer__links">
+            <a href="{{ config.extra.github }}" rel="noopener noreferrer">GitHub</a>
+            <a href="{{ config.extra.x }}" rel="noopener noreferrer">X</a>
+            <a href="{{ config.extra.email }}">Email</a>
         </div>
     </footer>
+</div>
 </body>
 </html>
