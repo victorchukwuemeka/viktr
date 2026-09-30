@@ -1,0 +1,24 @@
+{% set blog = get_section(path="blog/_index.md") %}
+{%- set posts = blog.pages -%}
+{% set updated = "2026-01-01T00:00:00Z" -%}
+{% for post in posts %}{% if loop.first %}{% set_global updated = post.date %}{% endif %}{% endfor %}
+<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom" xml:lang="{{ config.default_language }}">
+    <title>{{ config.title }}</title>
+    <subtitle>{{ config.description }}</subtitle>
+    <link href="{{ get_url(path='atom.xml') }}" rel="self"/>
+    <link href="{{ config.base_url }}/"/>
+    <updated>{{ updated | date(format="%Y-%m-%dT%H:%M:%SZ") }}</updated>
+    <id>{{ config.base_url }}/</id>
+    <author><name>{{ config.author }}</name></author>
+    {% for post in posts %}
+    <entry>
+        <title>{{ post.title }}</title>
+        <link href="{{ post.permalink }}"/>
+        <id>{{ post.permalink }}</id>
+        <updated>{{ post.date | date(format="%Y-%m-%dT%H:%M:%SZ") }}</updated>
+        <summary>{{ post.summary | default(value="") }}</summary>
+        <content type="html">{{ post.content | safe }}</content>
+    </entry>
+    {% endfor %}
+</feed>

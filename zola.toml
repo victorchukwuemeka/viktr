@@ -1,0 +1,33 @@
+# Site URL - change this when you get a real domain
+base_url = "https://viktr.pages.dev"
+# base_url = "https://yourdomain.dev"
+
+title = "Victor Chukwuemeka"
+description = "Notes on cross-chain infrastructure, Rust, and the things I break while building."
+author = "Victor Chukwuemeka"
+default_language = "en"
+
+# Build settings
+compile_sass = true
+build_search_index = false
+generate_sitemap = true
+generate_robots_txt = true
+generate_feeds = true
+feed_filenames = ["rss.xml", "atom.xml"]
+minify_html = false
+
+# Tags: /tags/ and /tags/rust/ etc
+taxonomies = [
+    { name = "tags", feed = true },
+]
+
+[markdown]
+smart_punctuation = true
+
+[markdown.highlighting]
+theme = "catppuccin-latte"
+
+[extra]
+github = "https://github.com/victorchukwuemeka"
+x = "https://twitter.com/viktr_sol"
+email = "mailto:chukwuemekavictor693@gmail.com"

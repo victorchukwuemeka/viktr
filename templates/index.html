@@ -1,0 +1,43 @@
+{% extends "base.html" %}
+
+
+{% block content %}
+<div class="hero">
+    <h1>Hi, I'm Victor.</h1>
+    <p>
+        Blockchain and backend engineer. I build cross-chain infrastructure in
+        Rust and Solidity, and I write about the parts that break.
+    </p>
+</div>
+
+{% set blog = get_section(path="blog/_index.md") %}
+{% set posts = blog.pages %}
+{% set total = posts | length %}
+
+{% if total > 0 %}
+<div class="section-heading">Latest writing</div>
+<ul class="post-list">
+    {% for p in posts[:10] %}
+    <li class="post-item">
+        <h2 class="post-item__title"><a href="{{ p.path }}">{{ p.title }}</a></h2>
+        <p class="post-item__summary">{{ p.summary | default(value="") }}</p>
+        <div class="post-item__meta">
+            {{ p.date | date(format="%b %d, %Y") }}
+            {% if p.taxonomies %}
+            <span class="post-item__tags">
+                {% for t in p.taxonomies.tags %}
+                <a class="tag" href="{{ '/tags/' ~ t | slugify ~ '/' }}">{{ t }}</a>
+                {% endfor %}
+            </span>
+            {% endif %}
+        </div>
+    </li>
+    {% endfor %}
+</ul>
+{% if total > 10 %}
+<p style="margin-top:1.5rem"><a href="/blog/">All {{ total }} posts &rarr;</a></p>
+{% endif %}
+{% else %}
+<p class="empty">No posts yet.</p>
+{% endif %}
+{% endblock content %}

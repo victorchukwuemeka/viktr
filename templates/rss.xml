@@ -1,0 +1,21 @@
+{% set blog = get_section(path="blog/_index.md") %}
+{%- set posts = blog.pages -%}
+<?xml version="1.0" encoding="utf-8"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+    <channel>
+        <title>{{ config.title }}</title>
+        <description>{{ config.description }}</description>
+        <link>{{ config.base_url }}/</link>
+        <language>{{ config.default_language }}</language>
+        <atom:link href="{{ get_url(path='rss.xml') }}" rel="self" type="application/rss+xml"/>
+        {% for post in posts %}
+        <item>
+            <title>{{ post.title }}</title>
+            <link>{{ post.permalink }}</link>
+            <guid isPermaLink="true">{{ post.permalink }}</guid>
+            <pubDate>{{ post.date | date(format="%a, %d %b %Y %H:%M:%S +0000") }}</pubDate>
+            <description>{{ post.summary | default(value="") }}</description>
+        </item>
+        {% endfor %}
+    </channel>
+</rss>

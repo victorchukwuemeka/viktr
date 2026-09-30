@@ -1,0 +1,29 @@
+{% extends "base.html" %}
+
+
+{% block content %}
+<article>
+    <header class="post-header">
+        <div class="post-date">{{ page.date | date(format="%B %d, %Y") }}</div>
+        <h1>{{ page.title }}</h1>
+        <p class="post-summary">{{ page.summary | default(value="") }}</p>
+        {% if page.taxonomies %}
+        <div class="post-item__tags" style="margin-top:1rem">
+            {% for t in page.taxonomies.tags %}
+            <a class="tag" href="{{ '/tags/' ~ t | slugify ~ '/' }}">{{ t }}</a>
+            {% endfor %}
+        </div>
+        {% endif %}
+    </header>
+
+    {{ page.content | safe }}
+
+    <footer class="post-footer">
+        <p>
+            Found a mistake or want to argue with me? Ping me on
+            <a href="{{ config.extra.x }}" rel="noopener noreferrer">X</a> or
+            <a href="{{ config.extra.email }}">email</a>.
+        </p>
+    </footer>
+</article>
+{% endblock content %}

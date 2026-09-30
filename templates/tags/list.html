@@ -1,0 +1,19 @@
+{% extends "base.html" %}
+
+
+{% block content %}
+<h1>Tags</h1>
+<p class="post-summary" style="margin-bottom:2rem">Everything I've written about, indexed.</p>
+
+{% if terms %}
+<ul class="tag-list">
+    {% for t in terms %}
+    <li>
+        <a class="tag" href="{{ t.permalink }}">{{ t.name }}<span class="tag-count">{{ t.page_count }}</span></a>
+    </li>
+    {% endfor %}
+</ul>
+{% else %}
+<p class="empty">No tags yet.</p>
+{% endif %}
+{% endblock content %}

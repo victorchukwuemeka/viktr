@@ -1,0 +1,12 @@
+{% set blog = get_section(path="blog/_index.md") %}
+{%- set posts = blog.pages -%}
+<?xml version="1.0" encoding="utf-8"?>
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
+    <url><loc>{{ config.base_url }}/</loc></url>
+    <url><loc>{{ config.base_url }}/blog/</loc></url>
+    <url><loc>{{ config.base_url }}/tags/</loc></url>
+    <url><loc>{{ config.base_url }}/about/</loc></url>
+    {% for post in posts %}
+    <url><loc>{{ post.permalink }}</loc></url>
+    {% endfor %}
+</urlset>

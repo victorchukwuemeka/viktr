@@ -1,0 +1,32 @@
+{% extends "base.html" %}
+
+
+{% block content %}
+<h1>Writing</h1>
+<div class="post-summary" style="margin-bottom:2.5rem">
+    {{ section.content | safe }}
+</div>
+
+{% if section.pages %}
+<ul class="post-list">
+    {% for p in section.pages %}
+    <li class="post-item">
+        <h2 class="post-item__title"><a href="{{ p.path }}">{{ p.title }}</a></h2>
+        <p class="post-item__summary">{{ p.summary | default(value="") }}</p>
+        <div class="post-item__meta">
+            {{ p.date | date(format="%b %d, %Y") }}
+            {% if p.taxonomies %}
+            <span class="post-item__tags">
+                {% for t in p.taxonomies.tags %}
+                <a class="tag" href="{{ '/tags/' ~ t | slugify ~ '/' }}">{{ t }}</a>
+                {% endfor %}
+            </span>
+            {% endif %}
+        </div>
+    </li>
+    {% endfor %}
+</ul>
+{% else %}
+<p class="empty">Nothing published yet.</p>
+{% endif %}
+{% endblock content %}

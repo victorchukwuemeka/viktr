@@ -1,0 +1,4 @@
+public/
+.zola-cache/
+*.swp
+.DS_Store
