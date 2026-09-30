@@ -14,7 +14,7 @@ Zola site. Notes on wire formats, networking, erasure coding, and light clients.
 Write a new post:
 
 ```bash
-zola new content/blog/my-post.md
+./new-post my-title
 ```
 
 Front matter:
@@ -103,3 +103,12 @@ Hit all of these while setting this up. Most tutorials online are for older vers
   both `og:title` and `twitter:title`
 - `taiki-e/install-zola-action` no longer exists; the workflow downloads the
   binary from the release instead
+- `zola new` is gone in 0.23 (only init/build/serve/check remain). `./new-post`
+  writes the front matter instead
+- Blog posts render with `templates/page.html`, NOT `single.html`
+- Section indexes render with `templates/section.html`, NOT a per-section name
+- `page.summary` in front matter is silently ignored; use `description`
+- `table_of_contents()` does not exist; `page.toc` is JSON, not HTML
+- `{% macro %}` must be declared before use, or Tera errors on the whole build
+- Any `markdown.highlighting.theme` gets inlined as an HTML style attribute that
+  beats your stylesheet

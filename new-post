@@ -1,0 +1,33 @@
+#!/usr/bin/env bash
+# Create a new blog post. Usage: ./new-post my-title
+set -euo pipefail
+cd "$(dirname "$0")"
+
+title="${1:-untitled}"
+slug="${title// /-}"
+slug="$(printf '%s' "$slug" | tr '[:upper:]' '[:lower:]' | tr -cd 'a-z0-9-')"
+path="content/blog/${slug}.md"
+
+if [ -e "$path" ]; then
+  echo "new-post: $path already exists" >&2
+  exit 1
+fi
+
+# Trailing-silence issue: zola 0.23 dropped `zola new`, so this writes the
+# front matter and the directory itself.
+mkdir -p content/blog
+cat > "$path" <<EOF
++++
+title = "${title}"
+date = $(date +%Y-%m-%d)
+description = ""
+draft = true
+
+[taxonomies]
+tags = []
++++
+
+EOF
+
+echo "created $path"
+echo "now edit it, then run ./dev to preview"
