@@ -9,7 +9,7 @@
 <ul class="tag-list">
     {% for t in terms %}
     <li>
-        <a class="tag" href="{{ t.permalink }}">{{ t.name }}<span class="tag-count">{{ t.page_count }}</span></a>
+        <a class="tag" href="{{ t.path }}">{{ t.name }}<span class="tag-count">{{ t.page_count }}</span></a>
     </li>
     {% endfor %}
 </ul>

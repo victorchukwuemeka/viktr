@@ -1,8 +1,9 @@
 +++
 title = "Writing"
-description = "Notes on Solana internals, wire formats, erasure coding, and light clients."
+description = "Notes on wire formats, networking, erasure coding, and low-level systems work in Rust."
 sort_by = "date"
 +++
 
-Notes from building things: byte-level debugging, wire formats, and the gap
-between what a protocol documents and what its implementation actually does.
+Notes from building networked systems: wire formats, serialization, erasure
+coding, and the distance between what a protocol documents and what its
+implementation does at the byte level.

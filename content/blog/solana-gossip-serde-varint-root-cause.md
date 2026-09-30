@@ -1,11 +1,11 @@
 +++
 title = "Solana Gossip: The Byte That Broke Everything"
 date = 2026-09-30
-summary = "Reverse-engineering Agave's gossip wire format by hand, and the single missing attribute that made every packet after it garbage."
+summary = "Reverse-engineering a gossip wire protocol byte by byte, and the single missing attribute that made every packet after it garbage."
 draft = true
 
 [taxonomies]
-tags = ["solana", "rust", "gossip", "debugging", "protocol"]
+tags = ["rust", "solana", "gossip", "networking", "serialization", "debugging"]
 +++
 
 <!--

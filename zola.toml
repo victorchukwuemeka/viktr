@@ -3,7 +3,7 @@ base_url = "https://viktr.pages.dev"
 # base_url = "https://yourdomain.dev"
 
 title = "Victor Chukwuemeka"
-description = "Notes on cross-chain infrastructure, Rust, and the things I break while building."
+description = "Low-level systems engineer. Networking, wire formats, erasure coding, and light clients in Rust."
 author = "Victor Chukwuemeka"
 default_language = "en"
 
