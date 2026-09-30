@@ -1,0 +1,49 @@
+#!/usr/bin/env bash
+# Fails loudly on the mistakes that HTTP 200 hides: Zola's placeholder page,
+# and internal links pointing at nothing. Run after any build.
+set -euo pipefail
+cd "$(dirname "$0")"
+
+if [ ! -d public ]; then
+  echo "check: public/ missing — run ./build first" >&2
+  exit 1
+fi
+
+fail=0
+
+# Zola renders its own "Welcome to Zola!" placeholder when it can't find a
+# template. It returns HTTP 200, so curl checks never catch it.
+if grep -rl "Welcome to Zola" public/ 2>/dev/null | grep -q .; then
+  echo "check: FAILED — unrendered placeholder page:" >&2
+  grep -rl "Welcome to Zola" public/ >&2
+  fail=1
+fi
+
+# Internal links must resolve to a real file.
+python3 - <<'PY' || fail=1
+import re, pathlib, sys
+base = pathlib.Path("public")
+broken = []
+for f in base.rglob("*.html"):
+    for m in re.findall(r'(?:href|src)="(/[^"#?]*)"', f.read_text()):
+        t = base / m.lstrip("/").split("#")[0]
+        if not any(c.exists() for c in (t / "index.html", t, pathlib.Path(str(t) + ".html"))):
+            broken.append(f"  {m}  <- {f.relative_to(base)}")
+if broken:
+    print("check: FAILED — broken internal links:", file=sys.stderr)
+    print("\n".join(broken), file=sys.stderr)
+    sys.exit(1)
+PY
+
+# Nothing should be an empty stub.
+for f in $(find public -name index.html); do
+  if [ "$(wc -c <"$f")" -lt 200 ]; then
+    echo "check: FAILED — suspiciously small page: $f" >&2
+    fail=1
+  fi
+done
+
+if [ "$fail" -ne 0 ]; then
+  exit 1
+fi
+echo "check: ok — $(find public -name '*.html' | wc -l) pages, no placeholders, no broken links"

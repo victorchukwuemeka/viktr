@@ -55,7 +55,7 @@ inclusion over JSON-RPC. Recovered 21 of 32 data shreds in live testing — belo
 what the erasure code needs, and it still reconstructed the block.
 
 Building it meant reverse-engineering Agave's wire format from its source, byte by
-byte, and being wrong three times in instructive ways. [That story is here.](/blog/solana-gossip-serde-varint-root-cause/)
+byte, and being wrong three times in instructive ways. [That story is here.](https://victorchukwuemeka.github.io/sg32/)
 
 ## Where it's applied
 

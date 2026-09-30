@@ -7,10 +7,10 @@
 {% if terms %}
 <ul class="tag-list">
     {% for t in terms %}
-    <li><a class="tag" href="{{ t.path }}">{{ t.name }}<span class="tag-count">{{ t.page_count }}</span></a></li>
+    <li><a class="tag" href="{{ get_url(path=t.path) }}">{{ t.name }}<span class="tag-count">{{ t.page_count }}</span></a></li>
     {% endfor %}
 </ul>
 {% else %}
-<p class="empty">no tags yet</p>
+<p class="empty">no tags yet — nothing published so far.</p>
 {% endif %}
 {% endblock content %}
