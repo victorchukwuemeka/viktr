@@ -2,7 +2,7 @@
 title = "Solana Gossip: The Byte That Broke Everything"
 date = 2026-09-30
 description = "Reverse-engineering a gossip wire protocol byte by byte, and the single missing attribute that made every packet after it garbage."
-draft = true
+draft = false
 
 [taxonomies]
 tags = ["rust", "solana", "gossip", "networking", "serialization", "debugging"]
@@ -187,19 +187,52 @@ backwards from an MTU budget.
 `PullResponse` varies — 505 to 1232 bytes — because it's carrying a variable
 number of CRDS entries, and it's capped at the same MTU limit.
 
-[FILL: annotated hexdump of a real PullResponse from logs/ — show the
-Protocol discriminant, the version block, and where your ContactInfo begins.
-This is the thing that proves the whole post, so it should be a real capture,
-not a reconstruction.]
+I still don't have an annotated hexdump here. The captures in `logs/` are
+committed to the [sg32 repo](https://github.com/victorchukwuemeka/sg32), and
+they should go in this spot with the discriminant, the version block, and the
+start of the `ContactInfo` called out. Reconstructing one from memory would
+defeat the point of the post, so this section stays empty until there's a real
+capture to paste.
 
 ## What I still get wrong
 
-[FILL: this is the section that makes the post credible. Pull it from the mdbook
-— what you haven't solved yet. Don't soften it.]
+This is the part I'd have skipped if I were only writing a success story, which
+is exactly why it matters.
 
-[FILL: one or two specific open problems. Pruning, the repair protocol, whatever
-you actually haven't got working. Being concrete here is the whole point of the
-section.]
+**I can't read the spec.** I worked on this by watching what the network does
+and matching bytes, not by reading Agave's source first and understanding it
+front to back. That worked for the `wallclock` bug because the symptom was
+loud — a `PullRequest` that never got answered. It does not work as a general
+method. Anything where a wrong field produces a *valid-looking* result rather
+than silence will get past me, and I won't have a signal to notice.
+
+**I only understand the paths I've traced.** I know why the entrypoint
+`Ping`s a new peer, because I traced that path. I don't know why it
+`PruneMessage`s on the schedule it does, because I never traced it. The
+difference between the two is whether I can debug it when it breaks, and for
+most of the gossip service the honest answer right now is no.
+
+**I can parse gossip. I can't serve it.** sg32 receives and reconstructs
+blocks. It doesn't do repair — when a validator's shreds are incomplete because
+it missed a slot rather than because of packet loss, there's no `Repair`
+service in my implementation, and that's a real gap between a light client and
+anything you'd want to rely on for liveness.
+
+**Pruning is unimplemented.** The CRDS table in memory grows without bound
+because I have nothing evicting stale entries the way Agave's `prune` stage
+does. Over enough time on a real network that's a memory problem, not a
+correctness one, but it's a problem.
+
+**Reed-Solomon reconstruction is verified, erasure *detection* is thin.** I
+reconstruct a block from `21/32` shreds and I check the hash, which catches
+silent corruption. I don't yet handle the case where a received shred is
+*valid* but from a slot I don't care about, which is the easy half and the one
+I haven't written.
+
+None of these are exotic. They're all things a real implementation of this
+would have, and the reason they're listed here is that a project at this stage
+should be legible about which parts of the protocol it actually understands
+versus which parts it happens to be able to copy.
 
 ## Run it yourself
 
