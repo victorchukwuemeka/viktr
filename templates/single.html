@@ -15,6 +15,13 @@
     </div>
     {% endif %}
 
+    {% if page.toc %}
+    <nav class="post-toc">
+        <div class="post-toc-title">contents</div>
+        {{ page.toc | safe }}
+    </nav>
+    {% endif %}
+
     <div class="post-content">
         {{ page.content | safe }}
     </div>

@@ -1,19 +1,12 @@
 +++
 title = "Solana Gossip: The Byte That Broke Everything"
 date = 2026-09-30
-summary = "Reverse-engineering a gossip wire protocol byte by byte, and the single missing attribute that made every packet after it garbage."
+description = "Reverse-engineering a gossip wire protocol byte by byte, and the single missing attribute that made every packet after it garbage."
 draft = true
 
 [taxonomies]
 tags = ["rust", "solana", "gossip", "networking", "serialization", "debugging"]
 +++
-
-<!--
-DRAFT. Everything here comes from the material Victor gave me about sg32 and his
-gossip writeup. Gaps are marked with [FILL: ...] - do not publish until they're gone.
-He also has a longer mdbook version of this at docs/ in the sg32 repo; this post is
-the distilled version.
--->
 
 I wanted to run Solana without running Solana.
 
@@ -23,9 +16,9 @@ prove that a given transaction was in a given block without asking anyone to
 take its word for it.
 
 That project is [sg32](https://github.com/victorchukwuemeka/sg32). This post is
-about the part nobody warns you about: the three days it took to get Agave to
-send me anything at all, and why the bug was one missing attribute on one struct
-field.
+about the part nobody warns you about: the stretch of time it took to get Agave
+to send me anything at all, and why the bug was one missing attribute on one
+struct field.
 
 ## Gossip in 60 seconds
 
@@ -61,9 +54,9 @@ payload.
 
 ## Where it broke
 
-Step 1 worked immediately. `Ping` and `Pong` are trivially simple — a magic number
-and a bytemuck-encoded struct. I had 132 bytes going both ways within the first
-evening.
+Step 1 worked almost immediately. `Ping` and `Pong` are fixed-size messages — a
+magic number and a small struct — and I had 132 bytes going both ways quickly
+enough that it felt like the hard part was behind me.
 
 Step 2 is where it died. I sent a `PullRequest`. Nothing came back. Not an error —
 *nothing*. The entrypoint received the datagram, and silently ignored it.
@@ -94,8 +87,8 @@ corrupt everything after it.
 ## Phase 2: the Version struct
 
 I checked the envelope rather than the payload. Every gossip message is wrapped,
-and the first thing in the stream is a `Protocol` enum discriminant — a u32 saying
-which of the six message types this is.
+and the first thing in the stream is a `Protocol` enum discriminant saying which
+of the six message types this is.
 
 I was sending the wrong size. The `Version` struct in the envelope serialized to
 17 bytes on my side and 12 on Agave's. Five bytes of pure nothing, injected at the
@@ -158,7 +151,7 @@ error. You get a plausible-looking `ContactInfo` full of nonsense, and then a
 `PullRequest` that gets dropped because the pubkey doesn't correspond to anything
 real.
 
-**The lesson, and the reason I spent a day on the envelope before looking at the
+**The lesson, and the reason I kept auditing the envelope while ignoring the
 payload:** if the bytes on the wire are wrong, the struct definitions you build
 on top of them are also wrong, and no amount of fixing the struct definitions will
 help. I had three plausible bugs, fixed all three correctly, and observed nothing
@@ -194,17 +187,19 @@ backwards from an MTU budget.
 `PullResponse` varies — 505 to 1232 bytes — because it's carrying a variable
 number of CRDS entries, and it's capped at the same MTU limit.
 
-[FILL: paste an actual hexdump of a PullResponse here, from the logs in the sg32
-repo. Annotated, showing where the discriminant is and where your ContactInfo
-starts. The repo has logs/ committed.]
+[FILL: annotated hexdump of a real PullResponse from logs/ — show the
+Protocol discriminant, the version block, and where your ContactInfo begins.
+This is the thing that proves the whole post, so it should be a real capture,
+not a reconstruction.]
 
 ## What I still get wrong
 
-[FILL: your notes on this — you have a section on this in the mdbook. This is the
-part that makes the post credible, don't skip it.]
+[FILL: this is the section that makes the post credible. Pull it from the mdbook
+— what you haven't solved yet. Don't soften it.]
 
-Some things I know are incomplete: [FILL — pruning, the repair protocol, whatever
-your mdbook says you haven't solved yet.]
+[FILL: one or two specific open problems. Pruning, the repair protocol, whatever
+you actually haven't got working. Being concrete here is the whole point of the
+section.]
 
 ## Run it yourself
 
@@ -223,7 +218,9 @@ cargo run --release -- --entrypoint entrypoint.mainnet-beta.solana.com:8001
 The full byte-level walkthrough, the file-by-file change log, and the complete
 devnet conversation are in the repo's `docs/` mdbook.
 
-## Related
+## Read more
 
-- [How Solana Gossip Really Works: A Byte-Level Journey Into the Devnet](https://github.com/victorchukwuemeka/sg32)
+- [How Solana Gossip Really Works: A Byte-Level Journey Into the Devnet](https://victorchukwuemeka.github.io/sg32)
   — the long version, with every reference file in the Agave source
+- [sg32 on GitHub](https://github.com/victorchukwuemeka/sg32)
+  — source, `docs/`, and the commit-by-commit log of this bug

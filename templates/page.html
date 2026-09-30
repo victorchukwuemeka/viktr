@@ -1,10 +1,50 @@
 {% extends "base.html" %}
 
 {% block content %}
+{% set read_mins = (page.word_count / 220) | round | int %}
 <article class="post">
     <h1 class="post-title">{{ page.title }}</h1>
+
+    {% if page.date %}
+    <div class="post-meta">
+        <time datetime="{{ page.date | date(format='%Y-%m-%d') }}">{{ page.date | date(format="%Y-%m-%d") }}</time>
+        {% if read_mins > 0 %}
+        <span class="post-meta-sep">//</span>
+        <span>{{ read_mins }} min read</span>
+        {% endif %}
+    </div>
+    {% endif %}
+
+    {% if page.description %}
+    <div class="post-summary">{{ page.description }}</div>
+    {% endif %}
+
+    {% if page.taxonomies.tags %}
+    <div class="post-tags">
+        {% for t in page.taxonomies.tags %}<a class="post-tag" href="{{ get_url(path='/tags/' ~ t | slugify ~ '/') }}">#{{ t }}</a>{% if not loop.last %} {% endif %}{% endfor %}
+    </div>
+    {% endif %}
+
+    {% set toc = page.toc | default(value=false) %}
+    {% if toc and toc | length > 1 %}
+    <nav class="post-toc">
+        <div class="post-toc-title">contents</div>
+        <ul>
+        {% for e in toc %}
+            <li><a href="#{{ e.id }}">{{ e.title }}</a></li>
+        {% endfor %}
+        </ul>
+    </nav>
+    {% endif %}
+
     <div class="post-content">
         {{ page.content | safe }}
     </div>
+
+    <footer class="post-footer">
+        found a mistake, or want to argue with me?
+        <a href="{{ config.extra.x }}" rel="noopener noreferrer">x</a> or
+        <a href="{{ config.extra.email }}">email</a>.
+    </footer>
 </article>
 {% endblock content %}

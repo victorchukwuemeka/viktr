@@ -465,3 +465,52 @@ figure figcaption {
     margin-left: 20px;
   }
 }
+
+
+.post-toc {
+  margin-top: 1.5rem;
+  padding: 0.8rem 1rem 0.8rem 0.5rem;
+  border-left: 2px solid rgba(35,176,255,0.25);
+}
+
+.post-toc-title {
+  font-size: 0.85rem;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  color: rgba(205,214,244,0.5);
+  margin-bottom: 0.5rem;
+}
+
+.post-toc ul {
+  margin: 0;
+  padding-left: 1rem;
+  list-style: none;
+}
+
+.post-toc > ul {
+  padding-left: 0;
+}
+
+.post-toc li {
+  margin: 0.2rem 0;
+  font-size: 0.95rem;
+}
+
+.post-toc a {
+  color: rgba(205,214,244,0.9);
+}
+
+.post-toc a:hover {
+  color: rgb(35,176,255);
+}
+
+.post-meta {
+  font-size: 0.85rem;
+  color: rgba(205,214,244,0.55);
+  margin-bottom: 1rem;
+}
+
+.post-meta-sep {
+  margin: 0 0.5rem;
+  opacity: 0.4;
+}

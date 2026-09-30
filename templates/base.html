@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
 
     {% set meta_title = page?.title | default(value=section?.title) | default(value=config.title) %}
-    {% set meta_description = page?.summary | default(value=config.description) %}
+    {% set meta_description = page?.description | default(value=config.description) %}
     {% set meta_type = "website" %}
     {% if page and page.date %}{% set_global meta_type = "article" %}{% endif %}
 

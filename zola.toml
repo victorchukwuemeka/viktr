@@ -24,8 +24,9 @@ taxonomies = [
 [markdown]
 smart_punctuation = true
 
-[markdown.highlighting]
-theme = "catppuccin-mocha"
+# [markdown.highlighting] is deliberately absent. Any theme makes Zola inline
+# styles that beat the stylesheet, and Catppuccin's #1E1E2E clashed with the
+# Thorpe background. Blocks stay plain and are styled in sass/custom.scss.
 
 [extra]
 github = "https://github.com/victorchukwuemeka"
