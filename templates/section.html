@@ -10,7 +10,7 @@
 <ul class="post-list">
     {% for p in section.pages %}
     <li class="post-item">
-        <a href="{{ p.path }}">
+        <a href="{{ get_url(path=p.path) }}">
             <span class="post-item__date">{{ p.date | date(format="%Y-%m-%d") }}</span>
             :: <span class="post-item__title">{{ p.title }}</span>
         </a>
