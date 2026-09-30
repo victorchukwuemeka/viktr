@@ -1,0 +1,17 @@
+[build]
+  publish = "public"
+  command = "zola build"
+
+[build.environment]
+  ZOLA_VERSION = "0.23.6"
+
+[[headers]]
+  for = "/*"
+  [headers.values]
+    X-Content-Type-Options = "nosniff"
+    Referrer-Policy = "strict-origin-when-cross-origin"
+
+[[redirects]]
+  from = "/atom.xml"
+  to = "/rss.xml"
+  status = 301
