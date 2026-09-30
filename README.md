@@ -5,6 +5,7 @@ Zola site. Writes about cross-chain infrastructure, Rust, and Solidity.
 ## Daily use
 
 ```bash
+cd ~/viktr
 zola serve              # live preview at http://localhost:1111
 zola build              # output to public/
 zola serve --drafts     # include posts marked draft = true
