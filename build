@@ -1,0 +1,5 @@
+#!/usr/bin/env bash
+# Build with the production base_url from zola.toml. This is what CI runs.
+set -euo pipefail
+cd "$(dirname "$0")"
+exec zola build "$@"

@@ -22,14 +22,14 @@
         {% if p.taxonomies.tags %}
         <span class="post-tags-inline">
             ::
-            {% for t in p.taxonomies.tags %}<a class="post-tag" href="/tags/{{ t | slugify }}/">{{ t }}</a>{% if not loop.last %},{% endif %}{% endfor %}
+            {% for t in p.taxonomies.tags %}<a class="post-tag" href="{{ get_url(path='/tags/' ~ t | slugify ~ '/') }}">{{ t }}</a>{% if not loop.last %},{% endif %}{% endfor %}
         </span>
         {% endif %}
     </li>
     {% endfor %}
 </ul>
 {% if total > 10 %}
-<p style="margin-top:30px"><a href="/blog/">all {{ total }} posts &rarr;</a></p>
+<p style="margin-top:30px"><a href="{{ get_url(path='/blog/') }}">all {{ total }} posts &rarr;</a></p>
 {% endif %}
 {% else %}
 <p class="empty">no posts yet</p>

@@ -1,0 +1,6 @@
+#!/usr/bin/env bash
+# Local preview. --base-url must match where the dev server listens, otherwise
+# get_url() emits production URLs and you preview the deployed site, not your edits.
+set -euo pipefail
+cd "$(dirname "$0")"
+exec zola serve --base-url "http://localhost:1111" --drafts "$@"

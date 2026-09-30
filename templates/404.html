@@ -3,5 +3,5 @@
 {% block content %}
 <h1 class="post-title">404</h1>
 <p class="post-summary">that page doesn't exist.</p>
-<p><a href="/">&larr; back home</a></p>
+<p><a href="{{ get_url(path='/') }}">&larr; back home</a></p>
 {% endblock content %}

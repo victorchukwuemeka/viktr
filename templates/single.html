@@ -11,7 +11,7 @@
 
     {% if page.taxonomies.tags %}
     <div class="post-tags">
-        {% for t in page.taxonomies.tags %}<a class="post-tag" href="/tags/{{ t | slugify }}/">#{{ t }}</a>{% if not loop.last %} {% endif %}{% endfor %}
+        {% for t in page.taxonomies.tags %}<a class="post-tag" href="{{ get_url(path='/tags/' ~ t | slugify ~ '/') }}">#{{ t }}</a>{% if not loop.last %} {% endif %}{% endfor %}
     </div>
     {% endif %}
 
