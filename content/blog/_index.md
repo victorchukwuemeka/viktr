@@ -1,8 +1,8 @@
 +++
 title = "Writing"
-description = "Posts on cross-chain infrastructure, Rust, Solidity, and backend engineering."
+description = "Notes on Solana internals, wire formats, erasure coding, and light clients."
 sort_by = "date"
 +++
 
-Long-form writeups about the systems I build. Mostly infrastructure, mostly Rust
-and Solidity, and mostly the failure modes.
+Notes from building things: byte-level debugging, wire formats, and the gap
+between what a protocol documents and what its implementation actually does.
