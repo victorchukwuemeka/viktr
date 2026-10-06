@@ -1,6 +1,10 @@
 #!/usr/bin/env bash
 # Local preview. --base-url must match where the dev server listens, otherwise
 # get_url() emits production URLs and you preview the deployed site, not your edits.
+#
+# Do NOT put the port in --base-url. zola serve appends ":<port>" to base_url
+# unconditionally, so "http://localhost:1111" becomes "http://localhost:1111:1111"
+# and every asset 404s. Pass the bare origin; --port does the rest.
 set -euo pipefail
 cd "$(dirname "$0")"
-exec zola serve --base-url "http://localhost:1111" --drafts "$@"
+exec zola serve --base-url "http://localhost" --port 1111 --drafts "$@"

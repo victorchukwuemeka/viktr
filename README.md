@@ -49,11 +49,23 @@ That means `base_url` has to be correct for whatever you're doing:
 | Command | base_url used | Links point to |
 |---|---|---|
 | `./build`, or a plain `zola build` | `https://victorchukwuemeka.github.io/viktr` | live site |
-| `./dev` | `http://localhost:1111` | your machine |
+| `./dev` | `http://localhost` (Zola appends `:1111`) | your machine |
 
 If you run plain `zola serve` without `--base-url`, it generates **production**
 URLs, so localhost will load CSS and pages from the deployed site and you won't
 see your local edits. That's the failure mode `./dev` exists to prevent.
+
+Do **not** put the port in `--base-url`. `zola serve` appends `:<port>` to
+`base_url` unconditionally, so `--base-url http://localhost:1111` produces
+`http://localhost:1111:1111` in every link and every asset 404s. Bare origin in
+`--base-url`, port via `--port`.
+
+## Previewing drafts
+
+Posts with `draft = true` are skipped by `zola build`, so they will not appear in
+`public/` or on the live site. `./dev` passes `--drafts`, so a draft is visible
+locally at `localhost:1111` while remaining unpublished. Flip `draft = false` in
+the front matter when it is ready to go live.
 
 Do not hardcode `/custom.css` or `/blog/` in templates. Use
 `{{ get_url(path='/blog/') }}`. Root-relative paths break under a subpath.
